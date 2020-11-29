@@ -3,74 +3,86 @@ const net = require('net');
 
 
 //TODO add comment about how this is for tmi set up
-const client = new tmi.Client({
-	connection: {
-		secure: true,
-		reconnect: true
-	},
-	identity: {
-		username: 'DrVario23',
-		password: 'oauth:xlg5yi3erdly8rjbp4d0p9o0l2wqv3'
-	},
-	channels: ['DrVario23']
-});
 
-client.connect();
+const server = net.createServer(conn => {
+	conn.write("Connection Succesful\n")
 
-const server = net.createServer((socket) => {
-	socket.on('data', (data) => {
-		console.log(data.toString());
+	const client = new tmi.Client({
+		connection: {
+			secure: true,
+			reconnect: true
+		},
+		channels: ['DrVario23']
 	});
-	//From the offical tmi website. Simple command handler.
-		client.on('message', (channel, tags, message, self) => {
-			if(self || !message.startsWith('!')) return;
+		
 
-			const args = message.slice(1).split(' ');
-			const command = args.shift().toLowerCase();
+	client.connect();
 
-			switch(command) {
-				case "up":
-					socket.write('up');
-					break;
-				case "down":
-					socket.write('down');
-					break;
-				case "left":
-					socket.write('left');
-					break;
-				case "right":
-					socket.write('right');
-					break;
-				case "b":
-					socket.write('b');
-					break;
-				case "a":
-					socket.write('a');
-					break;
-				case "x":
-					socket.write('x');
-					break;
-				case "y":
-					socket.write('y')
-					break;
-				case "select":
-					socket.write('select');
-					break;
-				case "start":
-					socket.write('start');
-					break;
-				case "lb":
-					socket.write('lb');
-					break;
-				case "rb":
-					socket.write('rb');
-					break;
-			}
-		});
+//From the offical tmi website. Simple command handler.
+client.on('message', (channel, tags, message, self) => {
+	if(self || !message.startsWith('!')) return;
+	const args = message.slice(1).split(' ');
+	const command = args.shift().toLowerCase();
+	console.log(command);
+	switch(command) {
+		case "up":
+			conn.write('up');
+			console.log('up sent')
+			break;
+		case "down":
+			conn.write('down');
+			console.log('down sent')
+			break;
+		case "left":
+			conn.write('left');
+			console.log('left sent')
+			break;
+		case "right":
+			conn.write('right');
+			console.log('right sent')
+			break;
+		case "b":
+			conn.write('b');
+			console.log('b sent')
+			break;
+		case "a":
+			conn.write('a');
+			console.log('a sent')
+			break;
+		case "x":
+			conn.write('x');
+			console.log('x sent')
+			break;
+		case "y":
+			conn.write('y')
+			console.log('y sent')
+			break;
+		case "select":
+			conn.write('select');
+			console.log('select sent')
+			break;
+		case "start":
+			conn.write('start');
+			console.log('start sent')
+			break;
+		case "l":
+			conn.write('lb');
+			console.log('l sent')
+			break;
+		case "r":
+			conn.write('rb');
+			console.log('r sent')
+			break;
+	}
 });
 
-
-
-server.listen(8067, () => {
-	console.log("Server is listening on", server.address().port);
+	conn.on('data', (data) => {
+		console.log(data.toString());
+		conn.write("Received data")
+	});
+	conn.on('error', (error) => {
+		console.log(error.toString());
+	});
 });
+
+server.listen(8067);
