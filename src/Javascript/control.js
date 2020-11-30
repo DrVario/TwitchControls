@@ -12,7 +12,7 @@ const server = net.createServer(conn => {
 			secure: true,
 			reconnect: true
 		},
-		channels: ['DrVario23']
+		channels: ['Your_Twitch_Channel']
 	});
 		
 
