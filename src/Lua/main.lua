@@ -5,7 +5,6 @@ comm.socketServerResponse();
 
 while true do
 	line = comm.socketServerResponse()
-	print(comm.socketServerResponse())
 		if line == 'up'
 			then 
 				joypad.set({Up=true}, 1)
